@@ -18,4 +18,16 @@ class UserManager:
         except UniqueViolationError:
             raise HTTPException(400, "User with this email already exists")
         user_do = await database.fetch_one(user.select().where(user.c.id == id_))
-        return AuthManager(user_do)
+        return AuthManager.encode_token(user_do)
+
+    @staticmethod
+    async def login(user_data):
+        q = user.select().where(user.c.id == user_data["email"])
+        user_do = await database.fetch_one(q)
+        if not user_do:
+            raise HTTPException(400, "Wrong email or password")
+        elif not pwd_context.verify(user_data["password"], user_do["password"]):
+            raise HTTPException(400, "Wrong email or password")
+        return AuthManager.encode_token(user_do)
+
+
