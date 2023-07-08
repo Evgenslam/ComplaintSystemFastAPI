@@ -40,3 +40,5 @@ class CustomHTTPBearer(HTTPBearer):
         except jwt.InvalidTokenError:
             raise HTTPException(401, "Invalid token")
 
+
+def is_complainer(reques)
