@@ -14,7 +14,7 @@ class UserManager:
     async def register(user_data):
         user_data["password"] = pwd_context.hash(user_data["password"])
         try:
-            id_ = database.execute(user.insert().values(**user_data))
+            id_ = await database.execute(user.insert().values(**user_data))
         except UniqueViolationError:
             raise HTTPException(400, "User with this email already exists")
         user_do = await database.fetch_one(user.select().where(user.c.id == id_))
