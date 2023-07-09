@@ -1,8 +1,4 @@
-from pydantic import BaseModel
-
-
-class BaseUser(BaseModel):
-    email: str
+from schemas.base import BaseUser
 
 
 class UserRegisterIn(BaseUser):
