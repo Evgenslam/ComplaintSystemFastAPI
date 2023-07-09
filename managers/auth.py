@@ -30,8 +30,9 @@ class CustomHTTPBearer(HTTPBearer):
         self, request: Request
     ) -> Optional[HTTPBasicCredentials]:
         res = await super().__call__(request)
+
         try:
-            payload = jwt.decode(res.credentials, config("SECRET_KEY"), algorithm=["HS256"])
+            payload = jwt.decode(res.credentials, config("SECRET_KEY"), algorithms=["HS256"])
             user_data = await database.fetch_one(user.select().where(user.c.id == payload["sub"]))
             request.state.user = user_data
             return user_data
@@ -39,6 +40,9 @@ class CustomHTTPBearer(HTTPBearer):
             raise HTTPException(401, "Token is expired")
         except jwt.InvalidTokenError:
             raise HTTPException(401, "Invalid token")
+
+
+oauth2_scheme = CustomHTTPBearer()
 
 
 def is_complainer(request: Request):

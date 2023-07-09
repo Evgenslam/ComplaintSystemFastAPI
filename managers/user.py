@@ -22,7 +22,7 @@ class UserManager:
 
     @staticmethod
     async def login(user_data):
-        q = user.select().where(user.c.id == user_data["email"])
+        q = user.select().where(user.c.email == user_data["email"])
         user_do = await database.fetch_one(q)
         if not user_do:
             raise HTTPException(400, "Wrong email or password")
