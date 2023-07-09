@@ -11,4 +11,3 @@ class UserOut(BaseUser):
     phone: str
     role: RoleType
     iban: str
-

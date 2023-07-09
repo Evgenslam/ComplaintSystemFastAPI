@@ -6,7 +6,7 @@ from db import database
 from managers.auth import AuthManager
 from models import user, RoleType
 
-pwd_context = CryptContext(schemes=['bcrypt'], deprecated="auto")
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
 class UserManager:
@@ -40,4 +40,6 @@ class UserManager:
 
     @staticmethod
     async def change_role(new_role: RoleType, user_id: int):
-        await database.execute(user.update().where(user.c.id == user_id).values(role=new_role))
+        await database.execute(
+            user.update().where(user.c.id == user_id).values(role=new_role)
+        )
